@@ -18,7 +18,8 @@ The default is white for JPEGs and transparent for PNGs.
 
 The "resize" parameter determines how the image is resized and cropped. There are four possible values.
 
-(the examples below have been configured to use http://pkulak-nibbler-test.s3.amazonaws.com as the base URL)
+(the examples below have been configured to use http://pkulak-nibbler-test.s3.amazonaws.com as the base URL, with
+http://pkulak-nibbler-test.s3.amazonaws.com/bojack.png as the source image)
 
 fit
 ---
