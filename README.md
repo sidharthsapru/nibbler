@@ -30,7 +30,7 @@ Fit the image into the given box. Padding is added to center it.
 
 <img src="http://pkulak-nibbler-test.s3.amazonaws.com/fit.png" width="250" height="250"/>
 
-and adjust the quality of any image, on a 1 to 100 scale.
+and adjust the quality of any image, on a 1 to 100 scale, with a default of 70.
 
     /bojack.png?width=500&height=500&resize=fit&quality=1
 
