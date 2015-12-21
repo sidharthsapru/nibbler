@@ -1,11 +1,15 @@
 package com.vevo.nibbler;
 
-import com.google.common.io.ByteStreams;
 import com.vevo.nibbler.model.FileType;
 import com.vevo.nibbler.model.ResizeParams;
 import com.vevo.nibbler.model.Resizer;
 
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
+import javax.imageio.stream.MemoryCacheImageOutputStream;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +19,6 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -44,6 +46,16 @@ public class Resource extends HttpServlet {
 
         // The requested file type comes off the end of the request.
         FileType type = FileType.fromString(req.getRequestURI());
+
+        // Get the quality.
+        float quality = 0.7f;
+
+        if (req.getParameter("quality") != null) {
+            try {
+                int intQuality = Integer.parseInt(req.getParameter("quality"));
+                quality = ((float) intQuality) / 100f;
+            } catch (Exception e) { /* oh well */ }
+        }
 
         // Strip the extension since we use that to determine the OUTPUT file, not the INPUT file.
         String path = req.getRequestURI();
@@ -103,12 +115,20 @@ public class Resource extends HttpServlet {
             resp.setHeader("Last-Modified", imgResp.getHeaderString("Last-Modified"));
         }
 
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        ImageIO.write(image, type.getExtension(), os);
-        byte[] buffer = os.toByteArray();
-        InputStream is = new ByteArrayInputStream(buffer);
+        ImageWriter writer = ImageIO.getImageWritersByFormatName(type.getExtension()).next();
+        ImageWriteParam writeParam = writer.getDefaultWriteParam();
 
-        ByteStreams.copy(is, resp.getOutputStream());
+        if (type == FileType.JPEG) {
+            writeParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            writeParam.setCompressionQuality(quality);
+        }
+
+        ImageOutputStream os = new MemoryCacheImageOutputStream(resp.getOutputStream());
+        writer.setOutput(os);
+        IIOImage outputImage = new IIOImage(image, null, null);
+        writer.write(null, outputImage, writeParam);
+        writer.dispose();
+        os.close();
     }
 
     private void error(HttpServletResponse resp, int status, String message) throws IOException {
