@@ -1,9 +1,9 @@
-package com.pkulak.nibbler;
+package com.vevo.nibbler;
 
 import com.google.common.io.ByteStreams;
-import com.pkulak.nibbler.model.FileType;
-import com.pkulak.nibbler.model.ResizeParams;
-import com.pkulak.nibbler.model.Resizer;
+import com.vevo.nibbler.model.FileType;
+import com.vevo.nibbler.model.ResizeParams;
+import com.vevo.nibbler.model.Resizer;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;

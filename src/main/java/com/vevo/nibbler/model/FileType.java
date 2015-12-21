@@ -1,4 +1,4 @@
-package com.pkulak.nibbler.model;
+package com.vevo.nibbler.model;
 
 /**
  * The two file types we support, plus some info about their mime types.

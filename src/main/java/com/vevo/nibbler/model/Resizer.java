@@ -1,4 +1,4 @@
-package com.pkulak.nibbler.model;
+package com.vevo.nibbler.model;
 
 import org.imgscalr.Scalr;
 
