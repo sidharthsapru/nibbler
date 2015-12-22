@@ -1,5 +1,6 @@
-package com.vevo.nibbler.model;
+package com.vevo.nibbler;
 
+import com.vevo.nibbler.model.ResizeParams;
 import org.imgscalr.Scalr;
 
 import java.awt.*;

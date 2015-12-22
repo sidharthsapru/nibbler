@@ -5,6 +5,7 @@ package com.vevo.nibbler.model;
  */
 public enum FileType {
     JPEG ("jpg", "image/jpeg"),
+    BPG  ("bpg", "image/bpg"),
     PNG  ("png", "image/png");
 
     private String extension;
@@ -18,6 +19,9 @@ public enum FileType {
     public static FileType fromString(String path) {
         if (path.toLowerCase().endsWith(".png")) {
             return PNG;
+        }
+        if (path.toLowerCase().endsWith(".bpg")) {
+            return BPG;
         }
         return JPEG;
     }
