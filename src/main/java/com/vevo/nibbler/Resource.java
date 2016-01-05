@@ -33,7 +33,7 @@ public class Resource extends HttpServlet {
         // Get the resize params.
         ResizeParams params = new ResizeParams(req);
 
-        if (params.width * params.height < 1) {
+        if (params.width < 1 || params.height < 1) {
             error(resp, 400, "width and height must both be specified and non-zero");
             return;
         }

@@ -16,6 +16,12 @@ public class ResizeParams {
         this.method = ResizeMethod.FILL;
     }
 
+    public ResizeParams(int width, int height, ResizeMethod method) {
+        this.width = width;
+        this.height = height;
+        this.method = method;
+    }
+
     public ResizeParams(HttpServletRequest req) {
         width = tryParse(req.getParameter("width"));
         height = tryParse(req.getParameter("height"));

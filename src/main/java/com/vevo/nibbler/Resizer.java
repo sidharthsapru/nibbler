@@ -1,5 +1,6 @@
 package com.vevo.nibbler;
 
+import com.vevo.nibbler.model.ResizeMethod;
 import com.vevo.nibbler.model.ResizeParams;
 import org.imgscalr.Scalr;
 
@@ -13,6 +14,26 @@ public class Resizer {
     public static BufferedImage resize(BufferedImage image, ResizeParams params) {
         switch (params.method) {
             case FIT:
+                // Never scale up.
+                if (params.width > image.getWidth() && params.height > image.getHeight()) {
+                    float requestedRatio = (float) params.width / (float) params.height;
+                    float currentRatio = (float) image.getWidth() / (float) image.getHeight();
+
+                    if (requestedRatio < currentRatio) {
+                        return resize(image, new ResizeParams(
+                                image.getWidth(),
+                                (int) (image.getWidth() / requestedRatio),
+                                ResizeMethod.FIT
+                        ));
+                    }
+
+                    return resize(image, new ResizeParams(
+                            (int) (image.getHeight() * requestedRatio),
+                            image.getHeight(),
+                            ResizeMethod.FIT
+                    ));
+                }
+
                 // Do the scale.
                 Scalr.Mode mode = Scalr.Mode.FIT_TO_WIDTH;
 
