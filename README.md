@@ -73,7 +73,7 @@ Turn the image into a circle!
 
 <img src="http://pkulak-nibbler-test.s3.amazonaws.com/round.png" width="250" height="250"/>
 
-Do you want a backgound that's not white or transparent? (Also notice that the return format has been changed to JPEG
+Do you want a background that's not white or transparent? (Also notice that the return format has been changed to JPEG
 by the new extension.
 
     /bojack.jpg?width=500&height=500&resize=round&bg=006341
