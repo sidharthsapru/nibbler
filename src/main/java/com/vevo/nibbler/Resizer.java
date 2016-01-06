@@ -74,7 +74,9 @@ public class Resizer {
 
                 return image;
             case FIT_HEIGHT:
-                image = Scalr.resize(image, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_HEIGHT, params.width, params.height);
+                if (image.getHeight() > params.height) {
+                    image = Scalr.resize(image, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_HEIGHT, params.width, params.height);
+                }
 
                 if (image.getWidth() > params.width) {
                     return resize(image, new ResizeParams(params.width, params.height));
