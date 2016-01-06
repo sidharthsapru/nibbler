@@ -46,6 +46,15 @@ Fit the image into the given box. Padding is added to center it.
 
 <img src="http://pkulak-nibbler-test.s3.amazonaws.com/fit.png" width="250" height="250"/>
 
+fill
+---
+
+Fit the image into the given box with no padding. Cropping is used if the ratios don't match.
+
+    /bojack.png?width=500&height=500&resize=fill
+
+<img src="http://pkulak-nibbler-test.s3.amazonaws.com/fill.png" width="250" height="250"/>
+
 fit_width
 ---------
 
