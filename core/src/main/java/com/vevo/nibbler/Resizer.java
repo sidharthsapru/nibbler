@@ -11,6 +11,13 @@ import java.awt.image.BufferedImage;
  * This is where the magic happens!
  */
 public class Resizer {
+    /**
+     * Resize the given image based on the parameters.
+     *
+     * @param image The image to resize.
+     * @param params The set of resize options.
+     * @return The resized image.
+     */
     public static BufferedImage resize(BufferedImage image, ResizeParams params) {
         switch (params.method) {
             case FIT:

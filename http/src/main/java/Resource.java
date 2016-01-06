@@ -1,5 +1,5 @@
-package com.vevo.nibbler;
-
+import com.vevo.nibbler.Resizer;
+import com.vevo.nibbler.Writer;
 import com.vevo.nibbler.model.FileType;
 import com.vevo.nibbler.model.ResizeParams;
 
@@ -31,7 +31,7 @@ public class Resource extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // Get the resize params.
-        ResizeParams params = new ResizeParams(req);
+        ResizeParams params = new ResizeParams(req.getParameterMap());
 
         if (params.width < 1 || params.height < 1) {
             error(resp, 400, "width and height must both be specified and non-zero");

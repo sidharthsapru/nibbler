@@ -1,6 +1,6 @@
 package com.vevo.nibbler.model;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * Hold everything we need to know exactly how to resize an image.
@@ -22,15 +22,21 @@ public class ResizeParams {
         this.method = method;
     }
 
-    public ResizeParams(HttpServletRequest req) {
-        width = tryParse(req.getParameter("width"));
-        height = tryParse(req.getParameter("height"));
-        method = ResizeMethod.fromString(req.getParameter("resize"));
+    public ResizeParams(Map<String, String[]> req) {
+        width = tryParse(req.get("width"));
+        height = tryParse(req.get("height"));
+        method = ResizeMethod.fromString(firstParam(req.get("resize")));
     }
 
-    public static int tryParse(String text) {
+    private static String firstParam(String[] params) {
+        if (params == null || params.length == 0) return "";
+
+        return params[0];
+    }
+
+    private static int tryParse(String[] text) {
         try {
-            return Integer.parseInt(text);
+            return Integer.parseInt(firstParam(text));
         } catch (NumberFormatException e) {
             return 0;
         }

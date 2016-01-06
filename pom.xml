@@ -4,56 +4,99 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.pkulak.nibbler</groupId>
-    <artifactId>nibbler</artifactId>
+    <groupId>com.vevo.nibbler</groupId>
+    <artifactId>parent</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>http</module>
+        <module>core</module>
+    </modules>
 
-    <dependencies>
-        <!-- Jetty -->
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
-            <version>9.3.2.v20150730</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-servlet</artifactId>
-            <version>9.3.2.v20150730</version>
-        </dependency>
+    <repositories>
+        <repository>
+            <id>releases</id>
+            <url>http://nexus.vevodev.com/content/repositories/releases</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>snapshots</id>
+            <url>http://nexus.vevodev.com/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
-        <!-- A very handy library for resizing that we build on. -->
-        <dependency>
-            <groupId>org.imgscalr</groupId>
-            <artifactId>imgscalr-lib</artifactId>
-            <version>4.2</version>
-        </dependency>
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>vevo Release Repo</name>
+            <url>http://nexus.vevodev.com/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>vevo Snapshot Repo</name>
+            <url>http://nexus.vevodev.com/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
-        <!-- A nice HTTP client -->
-        <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-client</artifactId>
-            <version>2.21</version>
-        </dependency>
+    <scm>
+        <connection>scm:git:ssh://git@github.com:VEVO/nibbler.git</connection>
+        <developerConnection>scm:git:file://${basedir}/.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
-        <!-- This just goes in out of habit. -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>18.0</version>
-        </dependency>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.vevo.nibbler</groupId>
+                <artifactId>core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vevo.nibbler</groupId>
+                <artifactId>http</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
-        <!-- Get some help with sub-process execution. -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-exec</artifactId>
-            <version>1.3</version>
-        </dependency>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.5.3</version>
+                    <configuration>
+                        <localCheckout>true</localCheckout>
+                        <pushChanges>true</pushChanges>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <scmCommentPrefix>[release]${line.separator}</scmCommentPrefix>
+                        <tagNameFormat>release-@{project.version}</tagNameFormat>
+                        <branchName>master</branchName>
+                        <indentSize>4</indentSize>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 
-        <!-- Testing -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-        </dependency>
-    </dependencies>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
