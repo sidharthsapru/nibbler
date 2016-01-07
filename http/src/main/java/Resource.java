@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,31 +61,6 @@ public class Resource extends HttpServlet {
         // Resize.
         BufferedImage image = Resizer.resize(ImageIO.read((InputStream) imgResp.getEntity()), params);
 
-        // If we're going to write out a JPEG (or a background was asked for), we need to replace transparency.
-        if (type == FileType.JPEG || req.getParameter("bg") != null) {
-            Color bg = Color.white;
-
-            // Try out best to use the background color the user wants.
-            if (req.getParameter("bg") != null) {
-                String bgHex = req.getParameter("bg");
-
-                if (!bgHex.startsWith("#")) {
-                    bgHex = "#" + bgHex;
-                }
-
-                try {
-                    bg = Color.decode(bgHex);
-                } catch (NumberFormatException e) { /* oh well */ }
-            }
-
-            BufferedImage cleaned = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-            Graphics2D graphics2D = cleaned.createGraphics();
-            graphics2D.setPaint(bg);
-            graphics2D.fillRect(0, 0, image.getWidth(), image.getHeight());
-            graphics2D.drawImage(image, 0, 0, null);
-            image = cleaned;
-        }
-
         // And write it back out, taking care to pass along caching headers.
         resp.setStatus(200);
         resp.addHeader("Access-Control-Allow-Origin", "*");
@@ -100,7 +74,7 @@ public class Resource extends HttpServlet {
             resp.setHeader("Last-Modified", imgResp.getHeaderString("Last-Modified"));
         }
 
-        Writer.write(image, type, req.getParameter("quality"), resp.getOutputStream());
+        Writer.write(image, type, req.getParameter("quality"), req.getParameter("bg"), resp.getOutputStream());
     }
 
     private void error(HttpServletResponse resp, int status, String message) throws IOException {

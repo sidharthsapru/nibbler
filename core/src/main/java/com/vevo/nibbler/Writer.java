@@ -12,6 +12,7 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 
@@ -25,10 +26,13 @@ public class Writer {
      * @param image the image to write
      * @param type the output format (jpg, png or bpg)
      * @param quality the compression quality of the output (default 70 for JPEG, 43 for BPG)
+     * @param bg the background color for the image (null for white or transparent)
      * @param outputStream the stream to write to
      * @throws IOException
      */
-    public static void write(BufferedImage image, FileType type, String quality, OutputStream outputStream) throws IOException {
+    public static void write(BufferedImage image, FileType type, String quality, String bg, OutputStream outputStream)
+            throws IOException {
+
         float q = parseQuality(quality, type);
 
         String extension = "png";
@@ -36,6 +40,29 @@ public class Writer {
         // Write to PNG for both PNG and BPG.
         if (type == FileType.JPEG) {
             extension = type.getExtension();
+        }
+
+        // If we're going to write out a JPEG (or a background was asked for), we need to replace transparency.
+        if (type == FileType.JPEG || bg != null) {
+            Color bgColor = Color.white;
+
+            // Try out best to use the requested background color.
+            if (bg != null) {
+                if (!bg.startsWith("#")) {
+                    bg = "#" + bg;
+                }
+
+                try {
+                    bgColor = Color.decode(bg);
+                } catch (NumberFormatException e) { /* oh well */ }
+            }
+
+            BufferedImage cleaned = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+            Graphics2D graphics2D = cleaned.createGraphics();
+            graphics2D.setPaint(bgColor);
+            graphics2D.fillRect(0, 0, image.getWidth(), image.getHeight());
+            graphics2D.drawImage(image, 0, 0, null);
+            image = cleaned;
         }
 
         OutputStream out = outputStream;
