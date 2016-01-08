@@ -38,7 +38,7 @@ public class Resource extends HttpServlet {
         }
 
         // The requested file type comes off the end of the request.
-        FileType type = FileType.fromString(req.getRequestURI());
+        FileType type = FileType.fromPath(req.getRequestURI());
 
         // Strip the extension since we use that to determine the OUTPUT file, not the INPUT file.
         String path = req.getRequestURI();

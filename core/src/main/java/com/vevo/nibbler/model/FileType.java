@@ -16,11 +16,21 @@ public enum FileType {
         this.mimeType = mimeType;
     }
 
-    public static FileType fromString(String path) {
+    public static FileType fromPath(String path) {
         if (path.toLowerCase().endsWith(".png")) {
             return PNG;
         }
         if (path.toLowerCase().endsWith(".bpg")) {
+            return BPG;
+        }
+        return JPEG;
+    }
+
+    public static FileType fromString(String s) {
+        if (s.equalsIgnoreCase("png")) {
+            return PNG;
+        }
+        if (s.equalsIgnoreCase("bpg")) {
             return BPG;
         }
         return JPEG;
