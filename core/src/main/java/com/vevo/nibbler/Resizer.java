@@ -48,7 +48,7 @@ public class Resizer {
                     mode = Scalr.Mode.FIT_TO_HEIGHT;
                 }
 
-                image = Scalr.resize(image, Scalr.Method.ULTRA_QUALITY, mode, params.width, params.height);
+                image = Scalr.resize(image, Scalr.Method.AUTOMATIC, mode, params.width, params.height);
 
                 // And, if we need to, put it on a transparent background.
                 if (image.getHeight() != params.height || image.getWidth() != params.width) {
@@ -72,7 +72,7 @@ public class Resizer {
                 return image;
             case FIT_WIDTH:
                 if (image.getWidth() > params.width) {
-                    image = Scalr.resize(image, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_WIDTH, params.width, params.height);
+                    image = Scalr.resize(image, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_WIDTH, params.width, params.height);
                 }
 
                 if (image.getHeight() > params.height) {
@@ -82,7 +82,7 @@ public class Resizer {
                 return image;
             case FIT_HEIGHT:
                 if (image.getHeight() > params.height) {
-                    image = Scalr.resize(image, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_HEIGHT, params.width, params.height);
+                    image = Scalr.resize(image, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_HEIGHT, params.width, params.height);
                 }
 
                 if (image.getWidth() > params.width) {
@@ -137,7 +137,7 @@ public class Resizer {
 
                 // Do the scale, but only if we are scaling down.
                 if (newWidth > params.width) {
-                    return Scalr.resize(image, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, params.width, params.height);
+                    return Scalr.resize(image, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_EXACT, params.width, params.height);
                 } else {
                     return image;
                 }
