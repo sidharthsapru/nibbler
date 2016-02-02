@@ -76,7 +76,7 @@ public class Resizer {
                 }
 
                 if (image.getHeight() > params.height) {
-                    return resize(image, new ResizeParams(params.width, params.height));
+                    return resize(image, params.changeMethod(ResizeMethod.FILL));
                 }
 
                 return image;
@@ -86,13 +86,13 @@ public class Resizer {
                 }
 
                 if (image.getWidth() > params.width) {
-                    return resize(image, new ResizeParams(params.width, params.height));
+                    return resize(image, params.changeMethod(ResizeMethod.FILL));
                 }
 
                 return image;
             case ROUND:
                 int size = Math.min(params.width, params.height);
-                image = resize(image, new ResizeParams(size, size));
+                image = resize(image, new ResizeParams(size, size, ResizeMethod.FILL, params.horizontalBias, params.verticalBias));
 
                 int x = 0;
                 int y = 0;
@@ -129,10 +129,14 @@ public class Resizer {
 
                 if (requestedRatio < currentRatio) {
                     newWidth = (int) ((float) image.getWidth() * (requestedRatio / currentRatio));
-                    image = image.getSubimage((image.getWidth() - newWidth) / 2, 0, newWidth, newHeight);
+                    int newX = (int) ((image.getWidth() - newWidth) * params.horizontalBias);
+
+                    image = image.getSubimage(newX, 0, newWidth, newHeight);
                 } else {
                     newHeight = (int) ((float) image.getHeight() * (currentRatio / requestedRatio));
-                    image = image.getSubimage(0, (image.getHeight() - newHeight) / 2, newWidth, newHeight);
+                    int newY = (int) ((image.getHeight() - newHeight) * params.verticalBias);
+
+                    image = image.getSubimage(0, newY, newWidth, newHeight);
                 }
 
                 // Do the scale, but only if we are scaling down.
