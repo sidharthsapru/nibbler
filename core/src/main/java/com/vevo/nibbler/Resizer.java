@@ -97,6 +97,22 @@ public class Resizer {
                 int x = 0;
                 int y = 0;
 
+                // Did we get back a smaller image than we were expecting? Adjust our boxes accordingly.
+                if (image.getHeight() < params.height && image.getWidth() < params.width) {
+                    float heightRatio = ((float) image.getHeight()) / ((float) params.height);
+                    float widthRatio = ((float) image.getWidth()) / ((float) params.width);
+
+                    if (heightRatio > widthRatio) {
+                        params.width = (int) (((float) params.width) * heightRatio);
+                        params.height = (int) (((float) params.height) * heightRatio);
+                    } else {
+                        params.width = (int) (((float) params.width) * widthRatio);
+                        params.height = (int) (((float) params.height) * widthRatio);
+                    }
+
+                    size = Math.min(params.width, params.height);
+                }
+
                 if (image.getHeight() < params.height) {
                     y = (params.height - image.getHeight()) / 2;
                 } else {
