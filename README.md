@@ -24,14 +24,6 @@ You can adjust the quality of JPEGs, on a 1 to 100 scale, with a default of 70.
 
 <img src="http://pkulak-nibbler-test.s3.amazonaws.com/fit_q1.jpg" width="250" height="250"/>
 
-Or use BPG (this image and the one above are both 6K*).
-
-    /bojack.bpg?width=500&height=500&resize=fit&quality=23
-
-<img src="http://pkulak-nibbler-test.s3.amazonaws.com/bojack-bpg.png" width="250" height="250"/>
-
-\* well, not really. There's no native BPG browser support right now, so it's a PNG _of_ the BPG output.
-
 The "resize" parameter determines how the image is resized and cropped. There are four possible values.
 
 (the examples below have been configured to use http://pkulak-nibbler-test.s3.amazonaws.com as the base URL, with
