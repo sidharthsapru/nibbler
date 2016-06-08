@@ -61,6 +61,11 @@ public class Writer {
 
             if (type != FileType.PNG) {
                 writeParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+
+                if (type == FileType.WEBP) {
+                    writeParam.setCompressionType("Lossy");
+                }
+
                 writeParam.setCompressionQuality(q);
             }
 
