@@ -32,15 +32,8 @@ public class Writer {
 
         float q = parseQuality(quality, type);
 
-        String extension = "png";
-
-        // Write to PNG for both PNG and BPG.
-        if (type == FileType.JPEG) {
-            extension = type.getExtension();
-        }
-
         // If we're going to write out a JPEG (or a background was asked for), we need to replace transparency.
-        if (type == FileType.JPEG || bg != null) {
+        if ((type == FileType.JPEG || bg != null) && image.getColorModel().hasAlpha()) {
             Color bgColor = Color.white;
 
             // Try out best to use the requested background color.
@@ -63,10 +56,10 @@ public class Writer {
         }
 
         try {
-            ImageWriter writer = ImageIO.getImageWritersByFormatName(extension).next();
+            ImageWriter writer = ImageIO.getImageWritersByFormatName(type.getExtension()).next();
             ImageWriteParam writeParam = writer.getDefaultWriteParam();
 
-            if (type == FileType.JPEG) {
+            if (type != FileType.PNG) {
                 writeParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
                 writeParam.setCompressionQuality(q);
             }
