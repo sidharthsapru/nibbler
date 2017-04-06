@@ -9,49 +9,35 @@ import java.io.File;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ImageCropTest {
-
     @Test
-    public void testWidthCrop() {
+    public void testCrop() {
         BufferedImage testImage = loadImage("src/test/resources/cropTest.jpg");
-        int height = testImage.getHeight();
         int width = testImage.getWidth();
-        BufferedImage cropped = ImageCrop.cropBlackBorder(testImage, 0.04);
+
+        BufferedImage cropped = ImageCrop.cropLetterBoxing(testImage, 0.04);
         int croppedHeight = cropped.getHeight();
         int croppedWidth = cropped.getWidth();
-        assertNotEquals(height, croppedHeight);
+
+        assertEquals(549, croppedHeight);
         assertEquals(width, croppedWidth);
-
-    }
-
-    @Test
-    public void testHeightCrop() {
-        BufferedImage testImage = loadImage("src/test/resources/tmv.jpg");
-        int height = testImage.getHeight();
-        int width = testImage.getWidth();
-        BufferedImage cropped = ImageCrop.cropBlackBorder(testImage, 0.04);
-        int croppedHeight = cropped.getHeight();
-        int croppedWidth = cropped.getWidth();
-        assertEquals(height, croppedHeight);
-        assertNotEquals(width, croppedWidth);
-
     }
 
     @Test
     public void testNoCrop() {
         BufferedImage testImage = loadImage("src/test/resources/noCrop.jpg");
-        int height = testImage.getHeight();
-        int width = testImage.getWidth();
-        BufferedImage cropped = ImageCrop.cropBlackBorder(testImage, 0.04);
-        int croppedHeight = cropped.getHeight();
-        int croppedWidth = cropped.getWidth();
-        assertEquals(height, croppedHeight);
-        assertEquals(width, croppedWidth);
+        BufferedImage cropped = ImageCrop.cropLetterBoxing(testImage, 0.04);
+        assertTrue(testImage == cropped);
     }
 
-
+    @Test
+    public void testNoCropUneven() {
+        BufferedImage testImage = loadImage("src/test/resources/cropTestUneven.jpg");
+        BufferedImage cropped = ImageCrop.cropLetterBoxing(testImage, 0.04);
+        assertTrue(testImage == cropped);
+    }
 
     private BufferedImage loadImage(String path) {
         try {
