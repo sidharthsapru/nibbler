@@ -17,26 +17,48 @@ public class ImageCropTest {
         BufferedImage testImage = loadImage("src/test/resources/cropTest.jpg");
         int width = testImage.getWidth();
 
-        BufferedImage cropped = ImageCrop.cropLetterBoxing(testImage, 0.04);
+        BufferedImage cropped = ImageCrop.cropBlackBorder(testImage, 0.04);
         int croppedHeight = cropped.getHeight();
         int croppedWidth = cropped.getWidth();
 
-        assertEquals(549, croppedHeight);
+        assertEquals(548, croppedHeight);
         assertEquals(width, croppedWidth);
     }
 
     @Test
+    public void testCropHigherTolerance() {
+        BufferedImage testImage = loadImage("src/test/resources/cropTest2.jpg");
+        int width = testImage.getWidth();
+
+        BufferedImage cropped = ImageCrop.cropBlackBorder(testImage, 0.1);
+        int croppedHeight = cropped.getHeight();
+        int croppedWidth = cropped.getWidth();
+
+       // saveImage(cropped);
+
+        assertEquals(248, croppedHeight);
+        assertEquals(width, croppedWidth);
+
+        BufferedImage weirdScreenShot = loadImage("src/test/resources/cropTest3.jpg");
+        BufferedImage weiredCropped = ImageCrop.cropBlackBorder(weirdScreenShot, 0.1);
+        assertEquals(weirdScreenShot.getHeight(), weiredCropped.getHeight());
+        assertEquals(879, weiredCropped.getWidth());
+
+    }
+
+
+    @Test
     public void testNoCrop() {
         BufferedImage testImage = loadImage("src/test/resources/noCrop.jpg");
-        BufferedImage cropped = ImageCrop.cropLetterBoxing(testImage, 0.04);
+        BufferedImage cropped = ImageCrop.cropBlackBorder(testImage, 0.1);
         assertTrue(testImage == cropped);
     }
 
     @Test
     public void testNoCropUneven() {
         BufferedImage testImage = loadImage("src/test/resources/cropTestUneven.jpg");
-        BufferedImage cropped = ImageCrop.cropLetterBoxing(testImage, 0.04);
-        assertTrue(testImage == cropped);
+        BufferedImage cropped = ImageCrop.cropBlackBorder(testImage, 0.1);
+        assertTrue(cropped.getHeight() == 430);
     }
 
     private BufferedImage loadImage(String path) {
