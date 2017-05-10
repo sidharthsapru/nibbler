@@ -19,7 +19,7 @@ public class ImageCrop {
         return cropPillarBoxing(source, DEFAULT_TOLERANCE);
     }
 
-    public static BufferedImage cropLetterBoxing(BufferedImage source, double tolerance) {
+    static BufferedImage cropLetterBoxing(BufferedImage source, double tolerance) {
         int width = source.getWidth();
         int height = source.getHeight();
 
@@ -47,7 +47,7 @@ public class ImageCrop {
         return destination;
     }
 
-    public static BufferedImage cropPillarBoxing(BufferedImage source, double tolerance) {
+    static BufferedImage cropPillarBoxing(BufferedImage source, double tolerance) {
         int width = source.getWidth();
         int height = source.getHeight();
 
