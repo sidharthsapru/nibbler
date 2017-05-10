@@ -15,6 +15,9 @@ public class ImageCrop {
         return cropLetterBoxing(source, DEFAULT_TOLERANCE);
     }
 
+    public static  BufferedImage cropPillarBoxing(BufferedImage source) {
+        return cropPillarBoxing(source, DEFAULT_TOLERANCE);
+    }
 
     public static BufferedImage cropLetterBoxing(BufferedImage source, double tolerance) {
         int width = source.getWidth();
