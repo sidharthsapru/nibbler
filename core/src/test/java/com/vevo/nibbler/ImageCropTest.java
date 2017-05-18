@@ -16,11 +16,10 @@ public class ImageCropTest {
     public void testCrop() {
         BufferedImage testImage = loadImage("src/test/resources/cropTest.jpg");
         int width = testImage.getWidth();
-
         BufferedImage cropped = ImageCrop.cropLetterBoxing(testImage, 0.04);
         int croppedHeight = cropped.getHeight();
         int croppedWidth = cropped.getWidth();
-        assertEquals(549, croppedHeight);
+        assertEquals(548, croppedHeight);
         assertEquals(width, croppedWidth);
     }
 
@@ -70,6 +69,14 @@ public class ImageCropTest {
 
     }
 
+    @Test
+    public void testBadImageCrop() {
+        BufferedImage testImage = loadImage("src/test/resources/badcrop.png");
+        BufferedImage cropped = ImageCrop.cropLetterBoxing(testImage, 0.04);
+        int croppedHeight = cropped.getHeight();
+        assertEquals(555, croppedHeight);
+    }
+
 
     private BufferedImage loadImage(String path) {
         try {
@@ -78,4 +85,6 @@ public class ImageCropTest {
             throw new RuntimeException(e);
         }
     }
+
+
 }

@@ -9,7 +9,7 @@ public class ImageCrop {
 
     private static final double DEFAULT_TOLERANCE = 0.04;
     private static final int BLACK = Color.BLACK.getRGB();
-
+    private static final int MAX_BAD_PIXELS = 3;
 
     public static  BufferedImage cropLetterBoxing(BufferedImage source) {
         return cropLetterBoxing(source, DEFAULT_TOLERANCE);
@@ -77,21 +77,37 @@ public class ImageCrop {
 
 
     private static boolean scanColumn(BufferedImage source, int x, double tolerance) {
+        /*
+            Sample every five pixel. If 3 samples are bad then assume bad column.
+            Confirm with phil.
+         */
         int height = source.getHeight();
+        int totalBadPixelsInColumn = 0 ;
         for (int y = 0; y < height; y += 5) {
-            if (!isBlack(source.getRGB(x, y), tolerance)) return false;
+            if (!isBlack(source.getRGB(x, y), tolerance)) {
+                totalBadPixelsInColumn +=1;
+                if(totalBadPixelsInColumn > MAX_BAD_PIXELS) {
+                    return false;
+                }
+            }
         }
         return true;
     }
-
 
     private static boolean scanRow(BufferedImage source, int y, double tolerance) {
         int width = source.getWidth();
+        int totalBadPixelsInRow = 0;
         for (int x = 0; x < width; x += 5) {
-            if (!isBlack(source.getRGB(x, y), tolerance)) return false;
+            if (!isBlack(source.getRGB(x, y), tolerance)) {
+                totalBadPixelsInRow +=1;
+                if(totalBadPixelsInRow > MAX_BAD_PIXELS)
+                    return false;
+
+            }
         }
         return true;
     }
+
 
 
     private static int scanLeft(BufferedImage source, double tolerance) {
